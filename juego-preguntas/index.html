@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>El Quiz de Programar</title>
+    <link rel="icon" href="data:," />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bungee&family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="estilos.css" />
+  </head>
+  <body>
+    <div class="confeti" id="confeti" aria-hidden="true"></div>
+
+    <main>
+      <!-- ---------- Menú ---------- -->
+      <section id="menu" class="pantalla-juego">
+        <h1>El Quiz<br />de Programar</h1>
+        <p class="bajada">¿Cuánto aprendiste? Elegí los temas y a jugar.</p>
+
+        <div class="tarjeta">
+          <h2>Temas</h2>
+          <div class="temas" id="temas"></div>
+
+          <h2>Cantidad de preguntas</h2>
+          <div class="cantidades" id="cantidades">
+            <button type="button" class="chip" data-cantidad="5" aria-pressed="false">5</button>
+            <button type="button" class="chip" data-cantidad="10" aria-pressed="true">10</button>
+            <button type="button" class="chip" data-cantidad="20" aria-pressed="false">20</button>
+          </div>
+
+          <label class="interruptor">
+            <input type="checkbox" id="modoTranquilo" /> Modo tranquilo (sin reloj)
+          </label>
+
+          <button type="button" class="boton grande" id="botonJugar">Jugar</button>
+          <p class="record" id="record"></p>
+        </div>
+      </section>
+
+      <!-- ---------- Juego ---------- -->
+      <section id="juego" class="pantalla-juego" hidden>
+        <div class="barra-juego">
+          <div class="dato-juego"><small>Pregunta</small><strong id="numeroPregunta">1/10</strong></div>
+          <div class="dato-juego"><small>Puntos</small><strong id="puntaje">0</strong></div>
+          <div class="dato-juego"><small>Racha</small><strong id="racha">0</strong></div>
+          <button type="button" class="boton chico" id="botonComodin">50 / 50</button>
+        </div>
+
+        <div class="reloj" id="reloj" aria-hidden="true"><div id="relojRelleno"></div></div>
+
+        <div class="tarjeta pregunta">
+          <span class="etiqueta-tema" id="etiquetaTema"></span>
+          <h2 id="textoPregunta"></h2>
+          <pre class="codigo" id="codigoPregunta" hidden></pre>
+          <div class="opciones" id="opciones"></div>
+
+          <div class="devolucion" id="devolucion" hidden role="status" aria-live="polite">
+            <strong id="resultadoRespuesta"></strong>
+            <p id="explicacion"></p>
+            <button type="button" class="boton" id="botonSiguiente">Siguiente</button>
+          </div>
+        </div>
+        <p class="atajos">Atajos: <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd> para responder y <kbd>Enter</kbd> para seguir</p>
+      </section>
+
+      <!-- ---------- Resultados ---------- -->
+      <section id="resultados" class="pantalla-juego" hidden>
+        <div class="tarjeta resumen">
+          <small id="tituloNivel">Tu nivel</small>
+          <h2 id="nivel"></h2>
+          <p class="puntos-finales"><strong id="puntosFinales">0</strong> puntos</p>
+          <p id="detalleResumen"></p>
+          <p class="nuevo-record" id="nuevoRecord" hidden>¡Nuevo récord!</p>
+
+          <h3>Cómo te fue en cada tema</h3>
+          <div id="barrasTemas" class="barras-temas"></div>
+
+          <div id="repaso" class="repaso"></div>
+
+          <div class="fila-botones">
+            <button type="button" class="boton grande" id="botonOtraVez">Jugar de nuevo</button>
+            <button type="button" class="boton" id="botonRepasar" hidden>Repasar las que fallé</button>
+            <button type="button" class="boton" id="botonMenu">Cambiar temas</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="preguntas.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
