@@ -1,0 +1,668 @@
+/* Con @property el color de fondo cambia suave cuando elegís otro Pokémon */
+@property --acento {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #6390f0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  --acento: #6390f0;
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Chakra Petch", system-ui, sans-serif;
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 15% 8%, color-mix(in srgb, var(--acento) 40%, transparent), transparent 50%),
+    radial-gradient(circle at 92% 92%, color-mix(in srgb, var(--acento) 24%, transparent), transparent 50%),
+    #07080d;
+  background-attachment: fixed;
+  transition: --acento 0.8s ease;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+code,
+pre {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+}
+
+:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+/* ---------- Barra de arriba ---------- */
+.barra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 20px 24px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: "Bungee", sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 2px;
+}
+
+.pokebola {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  border: 3px solid #ffffff;
+  border-radius: 50%;
+  background: linear-gradient(#ee1515 0 46%, #ffffff 46% 54%, #ffffff 54%);
+}
+
+.pokebola::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 8px;
+  height: 8px;
+  translate: -50% -50%;
+  border: 2px solid #1c1c1c;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+/* ---------- CRUD ---------- */
+.crud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.crud li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px 6px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 0.85rem;
+  transition: background 0.25s, border-color 0.25s, scale 0.25s;
+}
+
+.crud b {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  font-family: "Bungee", sans-serif;
+  font-weight: 400;
+}
+
+.crud code {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.75rem;
+}
+
+.crud li.activa {
+  scale: 1.08;
+  border-color: #ffffff;
+  background: #ffffff;
+  color: #0b0c12;
+}
+
+.crud li.activa b {
+  background: var(--acento);
+  color: #ffffff;
+}
+
+.crud li.activa code {
+  color: #0b0c12;
+  font-weight: 600;
+}
+
+/* ---------- Distribución ---------- */
+main {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 24px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 8px 24px 48px;
+}
+
+.columna {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+.tarjeta {
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3);
+}
+
+h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.paso {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #0b0c12;
+  font-family: "Bungee", sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0;
+}
+
+.titulo-con-botones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.titulo-con-botones h2 {
+  margin: 0;
+}
+
+.contador {
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  letter-spacing: 0;
+}
+
+.nota {
+  margin: 0 0 12px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* ---------- Formularios ---------- */
+.fila-formulario {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+input {
+  flex: 1;
+  min-width: 0;
+  padding: 11px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+input:disabled {
+  opacity: 0.45;
+}
+
+.boton {
+  padding: 11px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.boton:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.22);
+  transform: translateY(-2px);
+}
+
+.boton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.boton.principal {
+  border-color: #ffffff;
+  background: #ffffff;
+  color: #0b0c12;
+}
+
+.boton.principal:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--acento) 35%, #ffffff);
+}
+
+.boton.chico {
+  padding: 6px 14px;
+  font-size: 0.85rem;
+}
+
+.boton.peligro {
+  border-color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.18);
+}
+
+.mensaje.ok {
+  color: #9be7b3;
+}
+
+.filtro {
+  flex: none;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.mensaje {
+  min-height: 1.4em;
+  margin: -6px 0 0;
+  font-size: 0.9rem;
+  color: #ffb3b3;
+}
+
+/* ---------- Vista previa ---------- */
+.vista-previa {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 132px;
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  border: 1px dashed rgba(255, 255, 255, 0.22);
+  border-radius: 18px;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.vista-previa.vacia {
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.vista-previa img {
+  width: 108px;
+  height: 108px;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 12px rgba(0, 0, 0, 0.45));
+}
+
+.vista-previa h3 {
+  margin: 0;
+  font-family: "Bungee", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
+.vista-previa p {
+  margin: 2px 0 8px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.etiquetas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tipo {
+  padding: 2px 12px;
+  border: 1.5px solid var(--color);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color) 30%, transparent);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* ---------- Consola de SQL ---------- */
+.consola {
+  background: rgba(0, 0, 0, 0.35);
+}
+
+#consola .etiqueta-operacion {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #0b0c12;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+#consola pre {
+  margin: 0 0 14px;
+  padding: 16px;
+  overflow-x: auto;
+  border-radius: 14px;
+  background: #05060a;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 0.92rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.palabra {
+  color: var(--acento);
+  filter: brightness(1.35);
+  font-weight: 600;
+}
+
+.numero {
+  color: #ffd166;
+}
+
+.texto {
+  color: #7be0a5;
+}
+
+.explicacion {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.explicacion li {
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.07);
+  line-height: 1.5;
+}
+
+.explicacion li:first-child {
+  background: color-mix(in srgb, var(--acento) 28%, transparent);
+  font-weight: 600;
+}
+
+.explicacion code {
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.35);
+  font-size: 0.85em;
+}
+
+details {
+  margin-top: 16px;
+  font-size: 0.9rem;
+}
+
+summary {
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+#listaHistorial {
+  max-height: 220px;
+  margin: 10px 0 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#listaHistorial li {
+  display: grid;
+  grid-template-columns: 64px 58px 1fr;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.78rem;
+}
+
+#listaHistorial span:first-child {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+#listaHistorial span:nth-child(2) {
+  font-weight: 600;
+  color: var(--acento);
+  filter: brightness(1.35);
+}
+
+#listaHistorial span:last-child {
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Equipo ---------- */
+.equipo {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 14px;
+}
+
+.vacio {
+  grid-column: 1 / -1;
+  padding: 28px 12px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.6;
+}
+
+.pokemon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 12px 12px;
+  border: 1px solid color-mix(in srgb, var(--color, #888888) 60%, transparent);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--color, #888888) 32%, transparent), transparent 70%),
+    rgba(255, 255, 255, 0.05);
+  text-align: center;
+}
+
+.pokemon.entra {
+  animation: aparecer 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
+}
+
+.pokemon.sale {
+  animation: liberar 0.5s ease-in forwards;
+}
+
+.pokemon.nuevo {
+  animation: aparecer 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.3) both, destello 1.4s ease-out;
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    scale: 0.7;
+  }
+}
+
+@keyframes liberar {
+  to {
+    opacity: 0;
+    scale: 1.25;
+    translate: 0 -30px;
+    filter: blur(6px);
+  }
+}
+
+@keyframes destello {
+  from {
+    box-shadow: 0 0 0 4px #ffffff, 0 0 40px var(--color);
+  }
+}
+
+.pokemon img {
+  width: 110px;
+  height: 110px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.45));
+}
+
+.pokemon h3 {
+  margin: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.pokemon .especie {
+  margin: 0 0 6px;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.pokemon .botones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin-top: auto;
+}
+
+.pokemon form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.pokemon form input {
+  padding: 7px 12px;
+  text-align: center;
+}
+
+.pokemon .pregunta {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+/* ---------- Tabla ---------- */
+.envoltorio-tabla {
+  overflow-x: auto;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.88rem;
+}
+
+caption {
+  padding: 8px 12px;
+  text-align: start;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+th,
+td {
+  padding: 8px 14px;
+  text-align: start;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+th {
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+tr.fila-nueva {
+  animation: resaltar 1.6s ease-out;
+}
+
+@keyframes resaltar {
+  from {
+    background: color-mix(in srgb, var(--acento) 60%, transparent);
+  }
+}
+
+.tabla-vacia {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+footer {
+  padding: 0 24px 32px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+@media (max-width: 960px) {
+  main {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .tarjeta {
+    padding: 18px;
+  }
+
+  .fila-formulario {
+    flex-wrap: wrap;
+  }
+
+  .fila-formulario input {
+    flex-basis: 100%;
+  }
+
+  .vista-previa img {
+    width: 84px;
+    height: 84px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

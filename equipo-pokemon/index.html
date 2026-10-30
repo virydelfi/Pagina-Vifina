@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mi PC Pokémon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bungee&family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="estilos.css" />
+  </head>
+  <body>
+    <header class="barra">
+      <div class="logo"><span class="pokebola"></span> MI PC POKÉMON</div>
+
+      <ol class="crud" aria-label="Operaciones de base de datos">
+        <li data-operacion="INSERT"><b>C</b><span>Crear</span><code>INSERT</code></li>
+        <li data-operacion="SELECT"><b>R</b><span>Leer</span><code>SELECT</code></li>
+        <li data-operacion="UPDATE"><b>U</b><span>Editar</span><code>UPDATE</code></li>
+        <li data-operacion="DELETE"><b>D</b><span>Borrar</span><code>DELETE</code></li>
+      </ol>
+    </header>
+
+    <main>
+      <section class="columna">
+        <div class="tarjeta" id="crear">
+          <h2><span class="paso">1</span> Buscá un Pokémon</h2>
+          <form id="formularioBuscar" class="fila-formulario">
+            <input
+              id="busqueda"
+              type="text"
+              autocomplete="off"
+              aria-label="Número o nombre del Pokémon"
+              placeholder="Número o nombre en inglés: 25, jigglypuff..."
+            />
+            <button class="boton" type="submit">Buscar</button>
+            <button class="boton" type="button" id="botonAzar">Al azar</button>
+          </form>
+
+          <div id="vistaPrevia" class="vista-previa vacia">Elegí un Pokémon para verlo acá.</div>
+
+          <h2><span class="paso">2</span> Ponele un nombre</h2>
+          <form id="formularioGuardar" class="fila-formulario">
+            <input
+              id="apodo"
+              type="text"
+              maxlength="20"
+              autocomplete="off"
+              aria-label="Nombre para tu Pokémon"
+              placeholder="Roberto, Mario, Rosita..."
+              disabled
+            />
+            <button class="boton principal" type="submit" id="botonGuardar" disabled>Guardar</button>
+          </form>
+          <p id="mensajeFormulario" class="mensaje" role="alert"></p>
+        </div>
+
+        <div class="tarjeta consola">
+          <h2>Lo que pasa por dentro</h2>
+          <div id="consola" aria-live="polite"></div>
+
+          <details id="historial">
+            <summary>Historial de esta visita <span id="cantidadHistorial"></span></summary>
+            <ol id="listaHistorial"></ol>
+          </details>
+        </div>
+      </section>
+
+      <section class="columna">
+        <div class="tarjeta">
+          <div class="titulo-con-botones">
+            <h2>Mis Pokémon <span id="cantidadPokemon" class="contador"></span></h2>
+            <button class="boton chico" type="button" id="botonLiberarTodos">Liberar a todos</button>
+          </div>
+          <input
+            id="filtro"
+            class="filtro"
+            type="text"
+            autocomplete="off"
+            aria-label="Buscar entre mis Pokémon por nombre"
+            placeholder="Buscar en mi PC por nombre: ro, mar..."
+          />
+          <div id="equipo" class="equipo"></div>
+        </div>
+
+        <div class="tarjeta">
+          <div class="titulo-con-botones">
+            <h2>La tabla por dentro</h2>
+            <button class="boton chico" type="button" id="botonDescargar">Descargar .sqlite</button>
+          </div>
+          <p class="nota">Así se guardan tus Pokémon de verdad: una fila por cada uno.</p>
+          <div class="envoltorio-tabla">
+            <table>
+              <caption><code>pokemon_guardados</code></caption>
+              <thead>
+                <tr><th>id</th><th>pokemon_number</th><th>pokemon_name</th></tr>
+              </thead>
+              <tbody id="cuerpoTabla"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      Base de datos SQLite que corre en tu navegador (sql.js) · Pokémon de PokéAPI · Se guarda en este navegador
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.12.0/sql-wasm.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
