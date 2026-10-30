@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Laboratorio de contraseñas</title>
+    <link rel="icon" href="data:," />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bungee&family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="estilos.css" />
+  </head>
+  <body>
+    <header class="barra">
+      <div class="logo"><span class="candado"></span> LABORATORIO DE CONTRASEÑAS</div>
+      <p class="aviso-local">Todo pasa en tu navegador. No se envía nada a ningún lado.</p>
+    </header>
+
+    <main>
+      <section class="columna">
+        <div class="tarjeta">
+          <h2><span class="paso">1</span> Inventá una contraseña</h2>
+          <div class="fila-formulario">
+            <input
+              id="clave"
+              type="text"
+              maxlength="64"
+              autocomplete="off"
+              autocapitalize="off"
+              spellcheck="false"
+              aria-label="Contraseña inventada"
+              placeholder="Escribí una contraseña inventada..."
+            />
+            <button class="boton" type="button" id="botonMostrar" aria-pressed="true">Ocultar</button>
+          </div>
+          <p class="advertencia">Usá una <b>inventada</b>. Nunca escribas tu contraseña real, ni siquiera acá.</p>
+
+          <p class="etiqueta">O probá una de estas:</p>
+          <div class="ejemplos" id="ejemplos"></div>
+        </div>
+
+        <div class="tarjeta" id="analisis">
+          <h2><span class="paso">2</span> Qué tan fuerte es</h2>
+
+          <div class="veredicto">
+            <strong id="veredicto">Esperando una contraseña</strong>
+            <div class="medidor" aria-hidden="true"><div id="medidorRelleno"></div></div>
+          </div>
+
+          <div class="datos">
+            <div class="dato"><small>Largo</small><strong id="datoLargo">0</strong></div>
+            <div class="dato"><small>Letras posibles</small><strong id="datoLetras">0</strong></div>
+            <div class="dato ancho"><small>Combinaciones posibles</small><strong id="datoCombinaciones">0</strong></div>
+            <div class="dato ancho">
+              <small>Tipos de caracteres</small>
+              <div class="tipos" id="tipos">
+                <span data-tipo="minusculas">minúsculas</span>
+                <span data-tipo="mayusculas">MAYÚSCULAS</span>
+                <span data-tipo="numeros">números</span>
+                <span data-tipo="simbolos">símbolos</span>
+                <span data-tipo="otros">otros</span>
+              </div>
+            </div>
+          </div>
+
+          <h3>Cuánto tardaría en crackearla, en promedio</h3>
+          <div class="tiempos">
+            <div class="tiempo"><small>Desde internet (el sitio te frena)</small><strong id="tiempoInternet">-</strong></div>
+            <div class="tiempo"><small>Con una placa de video, si se filtró la base</small><strong id="tiempoPlaca">-</strong></div>
+          </div>
+          <p class="nota" id="notaDiccionario"></p>
+          <p class="nota chica">Son cálculos aproximados para entender la idea: 10 intentos por segundo desde internet y 10.000 millones por segundo con una placa de video.</p>
+        </div>
+      </section>
+
+      <section class="columna">
+        <div class="tarjeta">
+          <h2><span class="paso">3</span> Atacala</h2>
+          <div class="fila-botones">
+            <button class="boton principal" type="button" id="botonDiccionario" data-ataque="diccionario" disabled>Diccionario</button>
+            <button class="boton principal" type="button" id="botonFuerzaBruta" data-ataque="fuerza-bruta" disabled>Fuerza bruta</button>
+            <button class="boton peligro" type="button" id="botonParar" disabled>Parar</button>
+            <label class="interruptor"><input type="checkbox" id="camaraLenta" /> Cámara lenta</label>
+          </div>
+
+          <div class="pantalla" id="pantalla">
+            <div class="intento-grande" id="intentoGrande">_</div>
+            <ul class="registro" id="registro" aria-hidden="true"></ul>
+            <div class="progreso" aria-hidden="true"><div id="progresoRelleno"></div></div>
+            <div class="estadisticas">
+              <div><small>Intentos</small><strong id="statIntentos">0</strong></div>
+              <div><small>Velocidad</small><strong id="statVelocidad">-</strong></div>
+              <div><small>Tiempo</small><strong id="statTiempo">0 s</strong></div>
+            </div>
+          </div>
+
+          <div class="resultado" id="resultado" role="status" aria-live="polite"></div>
+        </div>
+
+        <div class="tarjeta consola">
+          <div class="titulo-con-botones">
+            <h2>Lo que pasa por dentro</h2>
+            <div class="pestanas">
+              <button class="boton chico" type="button" data-codigo="diccionario" aria-pressed="true">Diccionario</button>
+              <button class="boton chico" type="button" data-codigo="fuerza-bruta" aria-pressed="false">Fuerza bruta</button>
+            </div>
+          </div>
+          <pre class="codigo" id="codigo"></pre>
+          <table class="variables">
+            <caption>Variables en vivo</caption>
+            <tbody id="variables"></tbody>
+          </table>
+        </div>
+
+        <div class="tarjeta">
+          <h2>Cómo hacer una contraseña fuerte</h2>
+          <ul class="consejos">
+            <li><b>Largo le gana a raro.</b> Cada letra de más multiplica el trabajo del atacante.</li>
+            <li><b>Cuatro palabras al azar</b> (<code>caballo bateria grapa correcta</code>) son más fuertes y más fáciles de recordar que <code>P@ssw0rd!</code>.</li>
+            <li><b>Una distinta para cada sitio.</b> Si se filtra una, no se cae todo lo demás.</li>
+            <li><b>Verificación en dos pasos</b> y un administrador de contraseñas: así no tenés que acordarte de nada.</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer>Laboratorio educativo · Los intentos se hacen contra una contraseña que escribís vos, en tu propia compu</footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
