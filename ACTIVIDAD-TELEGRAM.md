@@ -2,7 +2,7 @@
 
 ## Qué vamos a hacer
 
-Cada vez que alguien abra un Pull Request en este repositorio, **te llega un mensaje a Telegram** con el título, quién lo hizo y el link.
+Cada vez que alguien abra un Pull Request en este repositorio, o que entre un commit nuevo a `main` (por ejemplo, al mergear un Pull Request), **te llega un mensaje a Telegram** con el título, quién lo hizo y el link.
 
 Lo importante de esta actividad **no es el código**, es entender el **workflow**: GitHub puede ejecutar cosas solo, cuando pasa algo en tu repositorio. Hoy es un aviso. Mañana puede ser correr tests, publicar la página o revisar que no se haya roto nada.
 
@@ -11,10 +11,10 @@ Lo importante de esta actividad **no es el código**, es entender el **workflow*
 ## Cómo funciona (la idea completa)
 
 ```
-Alguien abre un Pull Request
+Alguien abre un Pull Request, o llega un commit a main
         │
         ▼
-GitHub ve el evento "pull_request"
+GitHub ve el evento "pull_request" o "push"
         │
         ▼
 Ejecuta el workflow  .github/workflows/aviso-telegram.yml
@@ -30,7 +30,7 @@ Un workflow tiene tres partes. Abrí el archivo y buscalas:
 
 | Parte | Qué responde | En nuestro archivo |
 | --- | --- | --- |
-| `on:` | **¿Cuándo corre?** | Cuando se abre un Pull Request (`pull_request`), o cuando lo apretás a mano (`workflow_dispatch`) |
+| `on:` | **¿Cuándo corre?** | Cuando se abre un Pull Request (`pull_request`), cuando entra un commit a `main` (`push`), o cuando lo apretás a mano (`workflow_dispatch`) |
 | `jobs:` | **¿Dónde corre?** | En una máquina de GitHub con Ubuntu (`runs-on: ubuntu-latest`). Vos no instalás nada |
 | `steps:` | **¿Qué hace?** | Un solo paso: le habla a Telegram con `curl` |
 
@@ -73,6 +73,8 @@ Fijate que en `aviso-telegram.yml` aparecen como `${{ secrets.TELEGRAM_BOT_TOKEN
 3. **Rompelo a propósito.** Cambiá el valor de `TELEGRAM_CHAT_ID` por `123` y corré el workflow de nuevo. Mirá cómo aparece la **cruz roja** y qué error muestra. Volvé a poner el número bueno.
 4. **El de verdad.** Creá una rama, cambiá cualquier cosa (por ejemplo una palabra del README), subila y abrí un Pull Request **desde esa rama, dentro de tu mismo repositorio**. Tiene que llegarte el aviso con el título y el link.
 5. **Mirá un Pull Request de otra persona.** Pedile a tu compañero/a que abra uno en tu repositorio: vas a ver que el aviso dice quién lo abrió.
+6. **Un commit a `main`.** Mergeá cualquier Pull Request, o editá un archivo directo en `main` desde GitHub. Te tiene que llegar «Nuevo commit en main de …» con el título del commit. Hacé dos o tres commits más y contá los mensajes: **uno por cada commit**.
+7. **Mirá la diferencia.** Un Pull Request avisa cuando se **abre**, antes de que nadie lo acepte. Un commit a `main` avisa cuando el cambio **ya está adentro**. ¿Cuál te sirve más para enterarte a tiempo de algo que hay que revisar?
 
 ## Si no te llega
 

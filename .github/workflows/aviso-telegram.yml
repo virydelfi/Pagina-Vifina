@@ -3,6 +3,8 @@ name: Aviso por Telegram
 on:
   pull_request:
     types: [opened, reopened, ready_for_review]
+  push:
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -13,12 +15,19 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          PR_TITULO: ${{ github.event.pull_request.title || 'Prueba manual' }}
-          PR_AUTOR: ${{ github.event.pull_request.user.login || github.actor }}
-          PR_LINK: ${{ github.event.pull_request.html_url || format('{0}/{1}', github.server_url, github.repository) }}
+          EVENTO: ${{ github.event_name }}
+          TITULO: ${{ github.event.pull_request.title || github.event.head_commit.message || 'Prueba manual' }}
+          AUTOR: ${{ github.event.pull_request.user.login || github.actor }}
+          LINK: ${{ github.event.pull_request.html_url || github.event.head_commit.url || format('{0}/{1}', github.server_url, github.repository) }}
         run: |
+          TITULO="${TITULO%%$'\n'*}"
+          if [ "${EVENTO}" = "push" ]; then
+            ENCABEZADO="Nuevo commit en main de ${AUTOR}"
+          else
+            ENCABEZADO="Nuevo Pull Request de ${AUTOR}"
+          fi
           curl --fail --silent --show-error \
             "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
             --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
-            --data-urlencode "text=Nuevo Pull Request de ${PR_AUTOR}: ${PR_TITULO}
-          ${PR_LINK}"
+            --data-urlencode "text=${ENCABEZADO}: ${TITULO}
+          ${LINK}"
