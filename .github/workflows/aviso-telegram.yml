@@ -9,6 +9,7 @@ on:
 
 jobs:
   avisar:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
       - name: Mandar el mensaje a Telegram
@@ -26,7 +27,15 @@ jobs:
           else
             ENCABEZADO="Nuevo Pull Request de ${AUTOR}"
           fi
-          curl --fail --silent --show-error \
+          if [ -z "${TELEGRAM_BOT_TOKEN}" ]; then
+            echo "::error::Falta el secret TELEGRAM_BOT_TOKEN o no está disponible para este evento."
+            exit 1
+          fi
+          if [ -z "${TELEGRAM_CHAT_ID}" ]; then
+            echo "::error::Falta el secret TELEGRAM_CHAT_ID o no está disponible para este evento."
+            exit 1
+          fi
+          curl --fail-with-body --silent --show-error \
             "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
             --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
             --data-urlencode "text=${ENCABEZADO}: ${TITULO}

@@ -81,7 +81,9 @@ Fijate que en `aviso-telegram.yml` aparecen como `${{ secrets.TELEGRAM_BOT_TOKEN
 - ¿Le diste **Iniciar** al bot? Sin eso no puede escribirte.
 - ¿El `chat_id` es solo el número, sin comillas ni espacios?
 - ¿Los nombres de los secrets están **exactamente** como en la tabla? Las mayúsculas y el guion bajo importan.
-- Abrí el paso fallido en **Actions**: Telegram contesta con el motivo del error.
+- Abrí el paso fallido en **Actions**: ahora también muestra el motivo que devuelve Telegram.
+- Si aparece `chat not found` o un error `400`, revisá que el `chat_id` sea el de la conversación con **ese mismo bot** y que ya le hayas escrito `/start`. Para un grupo, agregá el bot al grupo y usá el ID del grupo.
+- Si aparece que falta un secret, verificá su nombre y que esté configurado en **Settings → Secrets and variables → Actions**. Los Pull Requests que vienen de un fork se omiten porque GitHub no les entrega los secrets.
 
 ## Cosas para pensar
 
